@@ -1,0 +1,274 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Nov  5 09:57:58 2019
+
+@author: ronitrex
+"""
+
+import pandas as pd  # data processing, CSV file I/O
+
+survey2014 = pd.read_csv('datasets/OSMIMentalHealthinTechSurvey2014.csv').assign(Year=2014)
+survey2016 = pd.read_csv('datasets/OSMIMentalHealthinTechSurvey2016.csv').assign(Year=2016)
+survey2017 = pd.read_csv('datasets/OSMIMentalHealthinTechSurvey2017.csv').assign(Year=2017)
+survey2018 = pd.read_csv('datasets/OSMIMentalHealthinTechSurvey2018.csv').assign(Year=2018)
+
+survey1 =  pd.concat([survey2014, survey2016], ignore_index=True, sort=True)
+survey2 = pd.concat([survey2017, survey2018], ignore_index=True, sort=True)
+survey = pd.concat([survey1, survey2], ignore_index=True, sort=True)
+print(survey.shape)
+
+import re 
+
+def clean_columns(dataframe):
+
+    dataframe.columns = map(str.lower, dataframe.columns)
+
+    # Remove HTML artifacts
+    dataframe.rename(columns=lambda colname: re.sub('</\w+>', '', colname), inplace=True)
+    dataframe.rename(columns=lambda colname: re.sub('<\w+>', '', colname), inplace=True)
+
+
+    if {'#', 'start date (utc)', 'submit date (utc)', 'network id', 'timesstamp'}.issubset(set(dataframe.columns)):
+        dataframe.drop(columns=['#', 'start date (utc)', 'submit date (utc)', 'network id'], inplace=True)
+
+    dataframe.reset_index(drop=True)
+
+    return dataframe
+
+
+survey = clean_columns(survey)
+print(survey.shape)
+
+import numpy as np; 
+import matplotlib.pyplot as plt
+
+def ShowNullValues(dataframe):
+    total = dataframe.isnull().sum().sort_values(ascending=False)
+    nullValues = dataframe.isnull().sum()
+    totalValues = dataframe.isnull().count()
+    percent = (nullValues/totalValues).sort_values(ascending=False)
+    missingData = pd.concat([total, percent*100], axis=1, keys=['Total missing', 'Percent'])
+    print(missingData.head(20))
+    plt.figure(figsize=(25,5))
+    total.plot.bar()
+    y = ((lambda x: str(x)) (x) for x in range(len(dataframe.columns)))
+    plt.xticks(np.arange(len(dataframe.columns)), (y))
+    plt.ylabel("No. of missing or empty values")
+    plt.xlabel("Dataset Features")
+   
+    plt.show()
+    return missingData
+
+noisyData = ShowNullValues(survey)
+
+# ageDistribution = survey.loc[:, survey.columns.str.contains('age', regex=True)]
+ageDistribution = survey.loc[:, ['age', 'what is your age?']]
+ageDistribution.fillna('', inplace=True)
+survey['Age'] = ageDistribution.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
+
+
+genderDistribution = survey.loc[:, survey.columns.str.contains('gender|Gender', regex=True)]
+survey['Gender'] = genderDistribution.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
+survey.loc[survey['Gender'].str.contains('Trans|them|trans|Undecided|Contextual|transgender|nb|unicorn|Unicorn|queer|NB|binary|Enby|Human|little|androgynous|Androgyne|Neutral|Agender|Androgynous|Androgynous|Fluid|GenderFluid|Genderflux|genderqueer|Genderqueer' , regex=True), 'Gender'] = 'Undecided'
+survey.loc[survey['Gender'].str.contains('Female|female|FEMALE|Woman|woman|w|womail|W|Cis female| Female (cis)|Cis Female|cis female|cis woman|F|f' , regex=True), 'Gender'] = 'Female'
+cond1 = survey['Gender']!='Female'
+cond2 = survey['Gender']!='Undecided'
+survey.loc[cond1 & cond2, 'Gender'] = 'Male'
+survey.drop(genderDistribution, axis=1, inplace=True)
+showGender = survey['Gender']
+print(showGender.unique())
+
+soughtTreatment = survey.loc[:, survey.columns.str.contains('sought treatment')]
+soughtTreatment.fillna('', inplace=True)
+survey['Sought Treatment'] = soughtTreatment.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
+survey.loc[survey['Sought Treatment'].str.contains('yes|1.0|1|Yes' , regex=True), 'Sought Treatment'] = 'Yes'
+survey.loc[survey['Sought Treatment'].str.contains('no|0.0|0|No' , regex=True), 'Sought Treatment'] = 'No'
+survey.drop(soughtTreatment, axis=1, inplace=True)
+showSoughtTreatment = survey['Sought Treatment']
+print(showSoughtTreatment.unique())
+
+noisyData = ShowNullValues(survey)
+
+describethe = survey.loc[:, survey.columns.str.contains('describe the')]
+describethe.fillna('', inplace=True)
+survey['Describe Past Experience'] = describethe.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
+survey.drop(describethe, axis=1, inplace=True)
+showPastExperience = survey['Describe Past Experience']
+print(showPastExperience)
+
+anon = survey.loc[:, survey.columns.str.contains('anonymous')]
+anon.fillna('', inplace=True)
+survey['Prefer Anonymity'] = anon.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
+survey.loc[survey['Prefer Anonymity'].str.contains('yes|1.0|1|Yes', regex=True), 'Prefer Anonymity'] = 'Yes'
+survey.loc[survey['Prefer Anonymity'].str.contains('no|0.0|0|No' , regex=True), 'Prefer Anonymity'] = 'No'
+survey.drop(anon, axis=1, inplace=True)
+showPreferAnonymity = survey['Prefer Anonymity']
+print(showPreferAnonymity.unique())
+
+react = survey.loc[:, survey.columns.str.contains('react')]
+react.fillna('', inplace=True)
+survey['Rate Reaction to Problems'] = react.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
+survey.drop(react, axis=1, inplace=True)
+showReaction = survey['Rate Reaction to Problems']
+print(showReaction.unique())
+
+neg = survey.loc[:, survey.columns.str.contains('negative|badly', regex=True)]
+neg.fillna(' ', inplace=True)
+survey['Negative Consequences'] = neg.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
+survey.loc[survey['Negative Consequences'].str.contains('yes|1.0|1|Yes' , regex=True), 'Negative Consequences'] = 'Yes'
+survey.loc[survey['Negative Consequences'].str.contains('maybe|Maybe|1' , regex=True), 'Negative Consequences'] = 'Maybe'
+survey.loc[survey['Negative Consequences'].str.contains('no|No|0' , regex=True), 'Negative Consequences'] = 'No'
+survey.loc[survey['Negative Consequences'].str.contains('self-employed' , regex=True), 'Negative Consequences'] = 'Self-Employed'
+survey.drop(neg, axis=1, inplace=True)
+showNegativeConsequnces = survey['Negative Consequences']
+print(showNegativeConsequnces.unique())
+
+
+work = survey.loc[:, survey.columns.str.contains('work in', regex=True)]
+survey.drop(work, axis=1, inplace=True)
+state = survey.loc[:, survey.columns.str.contains('country', regex=True)]
+state.fillna('', inplace=True)
+survey['Location'] = state.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
+survey.loc[survey['Location'].str.contains('[A-Z][A-Z]|United States' , regex=True), 'Location'] = 'USA'
+showLocation = survey['Location']
+survey.drop(state, axis=1, inplace=True)
+print(showLocation.unique())
+
+
+resources = survey.loc[:, survey.columns.str.contains('resources', regex=True)]
+resources.fillna('', inplace=True)
+survey['Access to information'] = resources.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
+survey.loc[survey['Access to information'].str.contains('yes|Yes' , regex=True), 'Access to information'] = 'Yes'
+survey.loc[survey['Access to information'].str.contains('no|No' , regex=True), 'Access to information'] = 'No'
+survey.drop(resources, axis=1, inplace=True)
+showAccessToInformation = survey['Access to information']
+print(showAccessToInformation.unique())
+
+noisyData = ShowNullValues(survey)
+
+insurance = survey.loc[:, survey.columns.str.contains('insurance', regex=True)]
+insurance.fillna('', inplace=True)
+survey['Insurance'] = insurance.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
+survey.loc[survey['Insurance'].str.contains('1.0|1' , regex=True), 'Insurance'] = 'Yes'
+survey.loc[survey['Insurance'].str.contains('0.0|0' , regex=True), 'Insurance'] = 'No'
+survey.drop(insurance, axis=1, inplace=True)
+showInsurance = survey['Insurance']
+print(showInsurance.unique())
+
+
+diagnosis = survey.loc[:, survey.columns.str.contains('diagnosed|Diagnosed|diagnose|Diagnose', regex=True)]
+diagnosis.fillna(' ', inplace=True)
+survey['Diagnosis'] = diagnosis.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
+survey.loc[survey['Diagnosis'].str.contains('yes|Yes' , regex=True), 'Diagnosis'] = 'Yes'
+survey.loc[survey['Diagnosis'].str.contains('no|No' , regex=True), 'Diagnosis'] = 'No'
+survey.loc[survey['Diagnosis'].str.contains('sometimes|Sometimes' , regex=True), 'Diagnosis'] = 'Sometimes'
+survey.drop(diagnosis, axis=1, inplace=True)
+showDiagnosis = survey['Diagnosis']
+print(showDiagnosis.unique())
+
+
+discuss = survey.loc[:, survey.columns.str.contains('discuss|Discuss', regex=True)]
+discuss.fillna('', inplace=True)
+survey['Discuss Mental Health Problems'] = discuss.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
+survey.loc[survey['Discuss Mental Health Problems'].str.contains('some|Some' , regex=True), 'Discuss Mental Health Problems'] = 'Maybe'
+survey.loc[survey['Discuss Mental Health Problems'].str.contains('yes|Yes' , regex=True), 'Discuss Mental Health Problems'] = 'Yes'
+survey.loc[survey['Discuss Mental Health Problems'].str.contains('no|No' , regex=True), 'Discuss Mental Health Problems'] = 'No'
+survey.drop(discuss, axis=1, inplace=True)
+showDiscussMentalHealthProblems = survey['Discuss Mental Health Problems']
+print(showDiscussMentalHealthProblems.unique())
+
+response = survey.loc[:, survey.columns.str.contains('handled|provided|serious', regex=True)]
+response.fillna(' ', inplace=True)
+survey['Responsible Employer'] = response.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
+survey.loc[survey['Responsible Employer'].str.contains('some|Some' , regex=True), 'Responsible Employer'] = 'Maybe'
+survey.loc[survey['Responsible Employer'].str.contains('yes|Yes' , regex=True), 'Responsible Employer'] = 'Yes'
+survey.loc[survey['Responsible Employer'].str.contains('no|No' , regex=True), 'Responsible Employer'] = 'No'
+survey.loc[survey['Responsible Employer'].str.contains('self-employed' , regex=True), 'Responsible Employer'] = 'Self-Employed'
+survey.drop(response, axis=1, inplace=True)
+showResposibleEmployer = survey['Responsible Employer']
+print(showResposibleEmployer.unique())
+
+noisyData = ShowNullValues(survey)
+
+
+Disorder = survey.loc[:, survey.columns.str.contains('Disorder|disorder|syndrome|other', regex=True)]
+Disorder.fillna('', inplace=True)
+DisorderNotes = Disorder.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
+survey['Disorder Notes'] = DisorderNotes
+survey['Disorder'] = DisorderNotes
+disorderTerms = 'disorder|Disorder|negative|Negative|syndrome|Syndrome|bipolar|Bipolar|depression|Depression|autism|PTSD'
+survey.loc[survey['Disorder'].str.contains(disorderTerms , regex=True), 'Disorder'] = 1
+survey.loc[survey['Disorder']!=1, 'Disorder'] = 0
+survey.drop(Disorder, axis=1, inplace=True)
+showDisorder = survey[['Disorder', 'Disorder Notes']] 
+
+techEmployer = survey.loc[:, survey.columns.str.contains('tech company|tech/IT', regex=True)]
+techEmployer.fillna(' ', inplace=True)
+survey['Tech Employer'] = techEmployer.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
+survey.loc[survey['Tech Employer'].str.contains('yes|Yes|1|1.0' , regex=True), 'Tech Employer'] = 'Yes'
+survey.loc[survey['Tech Employer'].str.contains('no|No|0|0.0' , regex=True), 'Tech Employer'] = 'No'
+survey.drop(techEmployer, axis=1, inplace=True)
+showTechEmployer = survey['Tech Employer']
+print(showTechEmployer.unique())
+
+
+noisyData = ShowNullValues(survey)
+# survey['Index'] = range(1, len(survey) + 1)
+# survey['Index'] = survey.index
+survey.to_csv('cleanedDatasets/OSMIcleaned.csv', index=False) 
+survey = pd.read_csv('cleanedDatasets/OSMIcleaned.csv')
+
+for feature in survey:
+    if survey[feature].isnull().sum()>1000:
+        print(feature, ' DROPPED')
+        survey = survey.drop([feature], axis=1)
+        
+    elif (feature == 'Describe Past Experience' or feature == 'Disorder Notes'):
+        continue
+    
+    else:
+        print(feature)
+        uniqueList = survey[feature].unique()
+        # print(uniqueList)
+        if np.str in uniqueList:
+            print('str cast')
+            survey[feature].fillna('Not Available', coerce=True)
+            survey[feature] = survey[feature].astype(str)
+            survey.loc[survey[feature].str.contains('' , regex=True), feature] = np.nan
+
+        if survey[feature].dtype == np.int64:
+            print('numeric cast')
+            survey[feature] = pd.to_numeric(survey[feature], errors='coerce').astype(int)
+
+        if survey[feature].dtype == np.float64:
+            print('float cast')
+            survey[feature] = pd.to_numeric(survey[feature], errors='coerce').astype(float)
+
+        if survey[feature].dtype == np.object:
+            print('object cast')
+            survey[feature] = survey[feature].astype(str)
+            survey.loc[survey[feature].str.contains('  ' , regex=True), feature] = np.nan
+
+            
+            
+survey.to_csv('cleanedDatasets/OSMIcleaned.csv', index=False)
+noisyData = ShowNullValues(survey)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
