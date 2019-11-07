@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Nov  5 09:57:58 2019
-
-@author: ronitrex
-"""
-
 import pandas as pd  # data processing, CSV file I/O
 
 survey2014 = pd.read_csv('datasets/OSMIMentalHealthinTechSurvey2014.csv').assign(Year=2014)
@@ -13,9 +5,9 @@ survey2016 = pd.read_csv('datasets/OSMIMentalHealthinTechSurvey2016.csv').assign
 survey2017 = pd.read_csv('datasets/OSMIMentalHealthinTechSurvey2017.csv').assign(Year=2017)
 survey2018 = pd.read_csv('datasets/OSMIMentalHealthinTechSurvey2018.csv').assign(Year=2018)
 
-survey1 =  pd.concat([survey2014, survey2016], ignore_index=True, sort=True)
-survey2 = pd.concat([survey2017, survey2018], ignore_index=True, sort=True)
-survey = pd.concat([survey1, survey2], ignore_index=True, sort=True)
+survey1416 =  pd.concat([survey2014, survey2016], ignore_index=True, sort=True)
+survey1718 = pd.concat([survey2017, survey2018], ignore_index=True, sort=True)
+survey = pd.concat([survey1416, survey1718], ignore_index=True, sort=True)
 print(survey.shape)
 
 import re 
@@ -64,9 +56,12 @@ noisyData = ShowNullValues(survey)
 
 # ageDistribution = survey.loc[:, survey.columns.str.contains('age', regex=True)]
 ageDistribution = survey.loc[:, ['age', 'what is your age?']]
-ageDistribution.fillna('', inplace=True)
-survey['Age'] = ageDistribution.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
-
+ageDistribution.fillna(0, inplace=True)
+survey.loc[:,'Age'] = ageDistribution.sum(axis=1)
+survey.loc[survey['Age']>100, 'Age'] = 30
+survey.loc[survey['Age']<0, 'Age'] = 30
+survey['Age-range'] = pd.cut(survey['Age'], [0, 20, 30, 65, 100], labels=["0-20", "21-30", "31-65", "66-100"], include_lowest=True)
+survey.drop(ageDistribution, axis=1, inplace=True)
 
 genderDistribution = survey.loc[:, survey.columns.str.contains('gender|Gender', regex=True)]
 survey['Gender'] = genderDistribution.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
@@ -108,7 +103,9 @@ print(showPreferAnonymity.unique())
 
 react = survey.loc[:, survey.columns.str.contains('react')]
 react.fillna('', inplace=True)
-survey['Rate Reaction to Problems'] = react.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
+survey['Rate Reaction to Problems'] = react.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
+survey.loc[survey['Rate Reaction to Problems'].str.contains('0.0|1.0|2.0|3.0|4.0|5.0', regex=True), 'Rate Reaction to Problems'] = 'Below Average'
+survey.loc[survey['Rate Reaction to Problems'].str.contains('6.0|7.0|8.0|9.0|10.0', regex=True), 'Rate Reaction to Problems'] = 'Above Average'
 survey.drop(react, axis=1, inplace=True)
 showReaction = survey['Rate Reaction to Problems']
 print(showReaction.unique())
@@ -149,7 +146,7 @@ noisyData = ShowNullValues(survey)
 
 insurance = survey.loc[:, survey.columns.str.contains('insurance', regex=True)]
 insurance.fillna('', inplace=True)
-survey['Insurance'] = insurance.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
+survey['Insurance'] = insurance.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
 survey.loc[survey['Insurance'].str.contains('1.0|1' , regex=True), 'Insurance'] = 'Yes'
 survey.loc[survey['Insurance'].str.contains('0.0|0' , regex=True), 'Insurance'] = 'No'
 survey.drop(insurance, axis=1, inplace=True)
@@ -197,11 +194,12 @@ Disorder.fillna('', inplace=True)
 DisorderNotes = Disorder.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
 survey['Disorder Notes'] = DisorderNotes
 survey['Disorder'] = DisorderNotes
-disorderTerms = 'disorder|Disorder|negative|Negative|syndrome|Syndrome|bipolar|Bipolar|depression|Depression|autism|PTSD'
+disorderTerms = 'disorder|Disorder|negative|Negative|syndrome|Syndrome|bipolar|Bipolar|depression|Depression|autism|PTSD|Yes|yes'
 survey.loc[survey['Disorder'].str.contains(disorderTerms , regex=True), 'Disorder'] = 1
 survey.loc[survey['Disorder']!=1, 'Disorder'] = 0
 survey.drop(Disorder, axis=1, inplace=True)
-showDisorder = survey[['Disorder', 'Disorder Notes']] 
+showDisorder = survey[['Disorder', 'Disorder Notes']]
+print(survey['Disorder'].unique())
 
 techEmployer = survey.loc[:, survey.columns.str.contains('tech company|tech/IT', regex=True)]
 techEmployer.fillna(' ', inplace=True)
@@ -212,47 +210,29 @@ survey.drop(techEmployer, axis=1, inplace=True)
 showTechEmployer = survey['Tech Employer']
 print(showTechEmployer.unique())
 
-
 noisyData = ShowNullValues(survey)
-# survey['Index'] = range(1, len(survey) + 1)
-# survey['Index'] = survey.index
-survey.to_csv('cleanedDatasets/OSMIcleaned.csv', index=False) 
-survey = pd.read_csv('cleanedDatasets/OSMIcleaned.csv')
 
-for feature in survey:
-    if survey[feature].isnull().sum()>1000:
-        print(feature, ' DROPPED')
-        survey = survey.drop([feature], axis=1)
-        
-    elif (feature == 'Describe Past Experience' or feature == 'Disorder Notes'):
-        continue
+survey = survey.loc[:, ~survey.columns.duplicated()]
+
+emptyColumns = survey.isnull().sum() 
+for column in emptyColumns.index:
+      if emptyColumns[column]>1000:
+          survey.drop(column, axis=1, inplace=True)
     
-    else:
-        print(feature)
-        uniqueList = survey[feature].unique()
-        # print(uniqueList)
-        if np.str in uniqueList:
-            print('str cast')
-            survey[feature].fillna('Not Available', coerce=True)
-            survey[feature] = survey[feature].astype(str)
-            survey.loc[survey[feature].str.contains('' , regex=True), feature] = np.nan
-
-        if survey[feature].dtype == np.int64:
-            print('numeric cast')
-            survey[feature] = pd.to_numeric(survey[feature], errors='coerce').astype(int)
-
-        if survey[feature].dtype == np.float64:
-            print('float cast')
-            survey[feature] = pd.to_numeric(survey[feature], errors='coerce').astype(float)
-
-        if survey[feature].dtype == np.object:
-            print('object cast')
-            survey[feature] = survey[feature].astype(str)
-            survey.loc[survey[feature].str.contains('  ' , regex=True), feature] = np.nan
-
-            
-            
+for feature in survey:
+    try: 
+        survey[feature] = pd.to_numeric(survey[feature], errors='coerce').astype(int)
+        print('numeric cast\t\t', feature)
+    except:
+       try:
+           survey[feature] = survey[feature].astype(str)
+           survey.loc[survey[feature].str.contains('^\s+$' , regex=True), feature] = np.nan
+           print('str cast\t\t', feature)
+       except:
+           continue
+                 
 survey.to_csv('cleanedDatasets/OSMIcleaned.csv', index=False)
+
 noisyData = ShowNullValues(survey)
 
 
