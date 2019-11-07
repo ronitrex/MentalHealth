@@ -12,24 +12,21 @@ print(survey.shape)
 
 import re 
 
-def clean_columns(dataframe):
-
+def cleanColumns(dataframe):
     dataframe.columns = map(str.lower, dataframe.columns)
 
     # Remove HTML artifacts
     dataframe.rename(columns=lambda colname: re.sub('</\w+>', '', colname), inplace=True)
     dataframe.rename(columns=lambda colname: re.sub('<\w+>', '', colname), inplace=True)
-
-
-    if {'#', 'start date (utc)', 'submit date (utc)', 'network id', 'timesstamp'}.issubset(set(dataframe.columns)):
-        dataframe.drop(columns=['#', 'start date (utc)', 'submit date (utc)', 'network id'], inplace=True)
-
+    dataframe.rename(columns = {'how many employees does your company or organization have?':'Company Size', 
+                                'do you have a family history of mental illness?' : 'Family History of Mental Illness'}, inplace = True) 
+    
+    dataframe.drop(columns=['#', 'start date (utc)', 'submit date (utc)', 'network id', 'timestamp'], inplace=True)
     dataframe.reset_index(drop=True)
 
     return dataframe
 
-
-survey = clean_columns(survey)
+survey = cleanColumns(survey)
 print(survey.shape)
 
 import numpy as np; 
@@ -47,7 +44,7 @@ def ShowNullValues(dataframe):
     y = ((lambda x: str(x)) (x) for x in range(len(dataframe.columns)))
     plt.xticks(np.arange(len(dataframe.columns)), (y))
     plt.ylabel("No. of missing or empty values")
-    plt.xlabel("Dataset Features")
+    plt.xlabel("Dataset features")
    
     plt.show()
     return missingData
@@ -59,9 +56,11 @@ ageDistribution = survey.loc[:, ['age', 'what is your age?']]
 ageDistribution.fillna(0, inplace=True)
 survey.loc[:,'Age'] = ageDistribution.sum(axis=1)
 survey.loc[survey['Age']>100, 'Age'] = 30
-survey.loc[survey['Age']<0, 'Age'] = 30
-survey['Age-range'] = pd.cut(survey['Age'], [0, 20, 30, 65, 100], labels=["0-20", "21-30", "31-65", "66-100"], include_lowest=True)
+survey.loc[survey['Age']<10, 'Age'] = 30
+survey['Age-Group'] = pd.cut(survey['Age'], [0, 20, 30, 40, 65, 100], labels=["0-20", "21-30", "31-40", "41-65", "66-100"], include_lowest=True)
 survey.drop(ageDistribution, axis=1, inplace=True)
+showAge = survey['Age']
+print(showAge.unique())
 
 genderDistribution = survey.loc[:, survey.columns.str.contains('gender|Gender', regex=True)]
 survey['Gender'] = genderDistribution.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
@@ -77,8 +76,8 @@ print(showGender.unique())
 soughtTreatment = survey.loc[:, survey.columns.str.contains('sought treatment')]
 soughtTreatment.fillna('', inplace=True)
 survey['Sought Treatment'] = soughtTreatment.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
-survey.loc[survey['Sought Treatment'].str.contains('yes|1.0|1|Yes' , regex=True), 'Sought Treatment'] = 'Yes'
-survey.loc[survey['Sought Treatment'].str.contains('no|0.0|0|No' , regex=True), 'Sought Treatment'] = 'No'
+survey.loc[survey['Sought Treatment'].str.contains('yes|1.0|1|Yes' , regex=True, na=False), 'Sought Treatment'] = 1
+survey.loc[survey['Sought Treatment'].str.contains('no|0.0|0|No' , regex=True, na=False), 'Sought Treatment'] = 0
 survey.drop(soughtTreatment, axis=1, inplace=True)
 showSoughtTreatment = survey['Sought Treatment']
 print(showSoughtTreatment.unique())
@@ -95,8 +94,8 @@ print(showPastExperience)
 anon = survey.loc[:, survey.columns.str.contains('anonymous')]
 anon.fillna('', inplace=True)
 survey['Prefer Anonymity'] = anon.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
-survey.loc[survey['Prefer Anonymity'].str.contains('yes|1.0|1|Yes', regex=True), 'Prefer Anonymity'] = 'Yes'
-survey.loc[survey['Prefer Anonymity'].str.contains('no|0.0|0|No' , regex=True), 'Prefer Anonymity'] = 'No'
+survey.loc[survey['Prefer Anonymity'].str.contains('yes|1.0|1|Yes', regex=True, na=False), 'Prefer Anonymity'] = 1
+survey.loc[survey['Prefer Anonymity'].str.contains('no|0.0|0|No' , regex=True, na=False), 'Prefer Anonymity'] = 0
 survey.drop(anon, axis=1, inplace=True)
 showPreferAnonymity = survey['Prefer Anonymity']
 print(showPreferAnonymity.unique())
@@ -136,8 +135,8 @@ print(showLocation.unique())
 resources = survey.loc[:, survey.columns.str.contains('resources', regex=True)]
 resources.fillna('', inplace=True)
 survey['Access to information'] = resources.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
-survey.loc[survey['Access to information'].str.contains('yes|Yes' , regex=True), 'Access to information'] = 'Yes'
-survey.loc[survey['Access to information'].str.contains('no|No' , regex=True), 'Access to information'] = 'No'
+survey.loc[survey['Access to information'].str.contains('yes|Yes' , regex=True, na=False), 'Access to information'] = 1
+survey.loc[survey['Access to information'].str.contains('no|No' , regex=True, na=False), 'Access to information'] = 0
 survey.drop(resources, axis=1, inplace=True)
 showAccessToInformation = survey['Access to information']
 print(showAccessToInformation.unique())
@@ -147,8 +146,8 @@ noisyData = ShowNullValues(survey)
 insurance = survey.loc[:, survey.columns.str.contains('insurance', regex=True)]
 insurance.fillna('', inplace=True)
 survey['Insurance'] = insurance.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
-survey.loc[survey['Insurance'].str.contains('1.0|1' , regex=True), 'Insurance'] = 'Yes'
-survey.loc[survey['Insurance'].str.contains('0.0|0' , regex=True), 'Insurance'] = 'No'
+survey.loc[survey['Insurance'].str.contains('1.0|1' , regex=True, na=False), 'Insurance'] = 1
+survey.loc[survey['Insurance'].str.contains('0.0|0' , regex=True, na=False), 'Insurance'] = 0
 survey.drop(insurance, axis=1, inplace=True)
 showInsurance = survey['Insurance']
 print(showInsurance.unique())
@@ -204,8 +203,8 @@ print(survey['Disorder'].unique())
 techEmployer = survey.loc[:, survey.columns.str.contains('tech company|tech/IT', regex=True)]
 techEmployer.fillna(' ', inplace=True)
 survey['Tech Employer'] = techEmployer.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
-survey.loc[survey['Tech Employer'].str.contains('yes|Yes|1|1.0' , regex=True), 'Tech Employer'] = 'Yes'
-survey.loc[survey['Tech Employer'].str.contains('no|No|0|0.0' , regex=True), 'Tech Employer'] = 'No'
+survey.loc[survey['Tech Employer'].str.contains('yes|Yes|1|1.0' , regex=True, na=False), 'Tech Employer'] = 1
+survey.loc[survey['Tech Employer'].str.contains('no|No|0|0.0' , regex=True, na=False), 'Tech Employer'] = 0
 survey.drop(techEmployer, axis=1, inplace=True)
 showTechEmployer = survey['Tech Employer']
 print(showTechEmployer.unique())
@@ -213,12 +212,13 @@ print(showTechEmployer.unique())
 noisyData = ShowNullValues(survey)
 
 survey = survey.loc[:, ~survey.columns.duplicated()]
+survey.replace('', np.nan, inplace=True)   
 
 emptyColumns = survey.isnull().sum() 
 for column in emptyColumns.index:
       if emptyColumns[column]>1000:
           survey.drop(column, axis=1, inplace=True)
-    
+
 for feature in survey:
     try: 
         survey[feature] = pd.to_numeric(survey[feature], errors='coerce').astype(int)
@@ -226,29 +226,13 @@ for feature in survey:
     except:
        try:
            survey[feature] = survey[feature].astype(str)
-           survey.loc[survey[feature].str.contains('^\s+$' , regex=True), feature] = np.nan
+           survey.loc[survey[feature].str.contains('^\s+$|nan' , regex=True), feature] = np.nan
            print('str cast\t\t', feature)
        except:
            continue
-                 
+                
 survey.to_csv('cleanedDatasets/OSMIcleaned.csv', index=False)
 
 noisyData = ShowNullValues(survey)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+print(survey.shape)
