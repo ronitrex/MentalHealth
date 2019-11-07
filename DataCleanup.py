@@ -135,8 +135,8 @@ print(showLocation.unique())
 resources = survey.loc[:, survey.columns.str.contains('resources', regex=True)]
 resources.fillna('', inplace=True)
 survey['Access to information'] = resources.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
-survey.loc[survey['Access to information'].str.contains('yes|Yes' , regex=True, na=False), 'Access to information'] = 1
-survey.loc[survey['Access to information'].str.contains('no|No' , regex=True, na=False), 'Access to information'] = 0
+survey.loc[survey['Access to information'].str.contains('yes|Yes' , regex=True, na=False), 'Access to information'] = 'Yes'
+survey.loc[survey['Access to information'].str.contains('no|No' , regex=True, na=False), 'Access to information'] = 'No'
 survey.drop(resources, axis=1, inplace=True)
 showAccessToInformation = survey['Access to information']
 print(showAccessToInformation.unique())
