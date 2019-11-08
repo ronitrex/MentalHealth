@@ -12,7 +12,7 @@ The datasets need to be cleaned and combined to carry out any further analysis.
   
 ### Project setup  
 The project was made on the [**Anaconda Data Science Platform.**](https://www.anaconda.com/)   
-Instructions on how to install and configure Anaconda for your system can be viewed [**here.**](https://docs.anaconda.com/anaconda/install/)
+Visit [**installation instructions**](https://docs.anaconda.com/anaconda/install/) to learn how to install and configure **Anaconda** for your system.
   
 The project files are provided in two formats:
 
@@ -20,7 +20,7 @@ The project files are provided in two formats:
 + **.py** -> for analysis in softwares like [**Spyder IDE.**](https://www.spyder-ide.org/)
 
 
-#### The orginal datasets downloaded from OSMI are in the [***datasets***](./datasets) directory.  
+#### The original datasets downloaded from OSMI are in the [***datasets***](./datasets) directory.  
 #### The cleaned dataset is saved to the [***cleanedDatasets***](./cleanedDatasets) directory.
 
 
@@ -30,7 +30,7 @@ The Jupyter Notebook ***DataCleanup*** deals with the process of cleaning and co
 
 ### [**Jupyter Notebook DataCleanup**](./DataCleanup.ipynb)
 
-### Visualising the dataset
+### Analysing the dataset
 
 The Jupyter Notebook ***DataAnalysis*** deals with the process of analysing the dataset features and studying data trends.
 ### [**Jupyter Notebook DataAnalysis**](./DataAnalysis.ipynb)
