@@ -27,8 +27,6 @@ def showFigure(fig, x=16, y=4):
 #        'Access to information', 'Insurance', 'Diagnosis',
 #        'Discuss Mental Health Problems', 'Responsible Employer', 'Disorder',
 #        'Tech Employer']    
- 
-
         
 fig = sns.distplot(survey['Age']);    
 showFigure(fig)    
@@ -37,6 +35,8 @@ showFigure(fig)
 fig = sns.boxenplot(x='Age', y='Gender', data=survey)
 showFigure(fig)
 
+fig = sns.catplot(x='Age-Group', y='Disorder', kind="bar", data=survey)
+showFigure(fig)
 fig = sns.catplot(x='Insurance', kind="count", hue='Gender', data=survey)
 showFigure(fig)
 fig = sns.catplot(x='Prefer Anonymity', kind="count", hue='Gender', data=survey)
@@ -44,8 +44,6 @@ showFigure(fig)
 fig = sns.catplot(x='Diagnosis', kind="count", hue='Gender', data=survey)
 showFigure(fig)
 fig = sns.catplot(x='Family History of Mental Illness', kind="count", hue='Gender', data=survey)
-showFigure(fig)
-fig = sns.catplot(x='Age-Group', y='Disorder', kind="bar", data=survey)
 showFigure(fig)
 fig = sns.swarmplot(x='Age', y='Family History of Mental Illness', hue='Gender',  palette="bright", data=survey)
 showFigure(fig, y=6)
@@ -69,8 +67,26 @@ fig = sns.catplot(y='Sought Treatment', hue='Gender', kind="count", data=survey)
 showFigure(fig)
 fig = sns.catplot(x='year', y='Sought Treatment', hue='Gender', kind="bar", data=survey)
 showFigure(fig)
+fig = sns.FacetGrid(survey, col='Disorder',  row="Sought Treatment")
+fig = fig.map(plt.hist, "Age")
+showFigure(fig)
+fig = sns.FacetGrid(survey, col='Diagnosis',  row="Sought Treatment")
+fig = fig.map(plt.hist, "Age")
+showFigure(fig)
+fig = sns.FacetGrid(survey, col='Family History of Mental Illness',  row="Sought Treatment")
+fig = fig.map(plt.hist, "Age")
+showFigure(fig)
+fig = sns.FacetGrid(survey, col='Discuss Mental Health Problems',  row="Sought Treatment")
+fig = fig.map(plt.hist, "Age")
+showFigure(fig)
 
 fig = sns.catplot(x='Gender', y='Sought Treatment', hue='Age-Group', kind="point", data=survey)
+showFigure(fig)
+fig = sns.catplot(x='Gender', y='Sought Treatment', hue='Discuss Mental Health Problems', kind="point", data=survey)
+showFigure(fig)
+fig = sns.catplot(x='Gender', y='Sought Treatment', hue='Disorder', kind="point", data=survey)
+showFigure(fig)
+fig = sns.catplot(x='Gender', y='Sought Treatment', hue='Diagnosis', kind="point", data=survey)
 showFigure(fig)
 fig = sns.lmplot(x='Disorder', y='Sought Treatment', col='Gender', hue='Age-Group', data=survey)
 showFigure(fig)
