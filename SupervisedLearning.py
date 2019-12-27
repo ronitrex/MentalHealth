@@ -231,13 +231,46 @@ def SVMClassifier():
     # make class predictions for the testing set
     y_pred_class = modelSVM.predict(X_test)
 
-    print('########### C-Support Vector Classification. ###############')
+    print('########### C-Support Vector Classification ###############')
 
     accuracy_score = evaluateModel(modelSVM, y_pred_class, True)
 
     models['C-Support Vector Classification'] = accuracy_score * 100
     
 SVMClassifier()
+
+
+from sklearn.ensemble import BaggingClassifier
+def bagging():
+    modelBagging = make_pipeline(preprocess, BaggingClassifier(KNeighborsClassifier(), max_samples=0.5, max_features=0.5))
+    modelBagging.fit(X_train, Y_train)
+    
+    # make class predictions for the testing set
+    y_pred_class = modelBagging.predict(X_test)
+
+    print('########### Bagging meta-estimator ###############')
+
+    accuracy_score = evaluateModel(modelBagging, y_pred_class, True)
+
+    models['Bagging'] = accuracy_score * 100
+    
+bagging() 
+
+
+from sklearn.ensemble import AdaBoostClassifier
+def adaboost():
+    modelAdaBoost = make_pipeline(preprocess, AdaBoostClassifier(n_estimators=100))
+    modelAdaBoost.fit(X_train, Y_train)
+    
+    # make class predictions for the testing set
+    y_pred_class = modelAdaBoost.predict(X_test)
+
+    print('########### Bagging meta-estimator ###############')
+
+    accuracy_score = evaluateModel(modelAdaBoost, y_pred_class, True)
+
+    models['AdaBoost'] = accuracy_score * 100
+adaboost()
 
 
 accuracyScores = pd.Series(models)
