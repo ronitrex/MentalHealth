@@ -1,9 +1,9 @@
 import pandas as pd  # data processing, CSV file I/O
 
-survey2014 = pd.read_csv('datasets/OSMIMentalHealthinTechSurvey2014.csv').assign(Year=2014)
-survey2016 = pd.read_csv('datasets/OSMIMentalHealthinTechSurvey2016.csv').assign(Year=2016)
-survey2017 = pd.read_csv('datasets/OSMIMentalHealthinTechSurvey2017.csv').assign(Year=2017)
-survey2018 = pd.read_csv('datasets/OSMIMentalHealthinTechSurvey2018.csv').assign(Year=2018)
+survey2014 = pd.read_csv('datasets/OSMIsurvey2014.csv').assign(Year=2014)
+survey2016 = pd.read_csv('datasets/OSMIsurvey2016.csv').assign(Year=2016)
+survey2017 = pd.read_csv('datasets/OSMIsurvey2017.csv').assign(Year=2017)
+survey2018 = pd.read_csv('datasets/OSMIsurvey2018.csv').assign(Year=2018)
 
 survey1416 =  pd.concat([survey2014, survey2016], ignore_index=True, sort=True)
 survey1718 = pd.concat([survey2017, survey2018], ignore_index=True, sort=True)
@@ -18,8 +18,7 @@ def cleanColumns(dataframe):
     # Remove HTML artifacts
     dataframe.rename(columns=lambda colname: re.sub('</\w+>', '', colname), inplace=True)
     dataframe.rename(columns=lambda colname: re.sub('<\w+>', '', colname), inplace=True)
-    dataframe.rename(columns = {'how many employees does your company or organization have?':'Company Size', 
-                                'do you have a family history of mental illness?' : 'Family History of Mental Illness'}, inplace = True) 
+    dataframe.rename(columns = {'how many employees does your company or organization have?':'Company Size', 'do you have a family history of mental illness?' : 'Family History of Mental Illness'}, inplace = True) 
     
     dataframe.drop(columns=['#', 'start date (utc)', 'submit date (utc)', 'network id', 'timestamp'], inplace=True)
     dataframe.reset_index(drop=True)
@@ -55,8 +54,8 @@ noisyData = ShowNullValues(survey)
 ageDistribution = survey.loc[:, ['age', 'what is your age?']]
 ageDistribution.fillna(0, inplace=True)
 survey.loc[:,'Age'] = ageDistribution.sum(axis=1)
-survey.loc[survey['Age']>100, 'Age'] = 30
-survey.loc[survey['Age']<10, 'Age'] = 30
+survey.loc[survey['Age']>100, 'Age'] = 0
+survey.loc[survey['Age']<10, 'Age'] = 0
 survey['Age-Group'] = pd.cut(survey['Age'], [0, 20, 30, 40, 65, 100], labels=["0-20", "21-30", "31-40", "41-65", "66-100"], include_lowest=True)
 survey.drop(ageDistribution, axis=1, inplace=True)
 showAge = survey['Age']
@@ -202,11 +201,11 @@ print(survey['Disorder'].unique())
 
 techEmployer = survey.loc[:, survey.columns.str.contains('tech company|tech/IT', regex=True)]
 techEmployer.fillna(' ', inplace=True)
-survey['Tech Employer'] = techEmployer.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
-survey.loc[survey['Tech Employer'].str.contains('yes|Yes|1|1.0' , regex=True, na=False), 'Tech Employer'] = 1
-survey.loc[survey['Tech Employer'].str.contains('no|No|0|0.0' , regex=True, na=False), 'Tech Employer'] = 0
+survey['Primarily a Tech Employer'] = techEmployer.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
+survey.loc[survey['Primarily a Tech Employer'].str.contains('yes|Yes|1|1.0' , regex=True, na=False), 'Primarily a Tech Employer'] = 1
+survey.loc[survey['Primarily a Tech Employer'].str.contains('no|No|0|0.0' , regex=True, na=False), 'Primarily a Tech Employer'] = 0
 survey.drop(techEmployer, axis=1, inplace=True)
-showTechEmployer = survey['Tech Employer']
+showTechEmployer = survey['Primarily a Tech Employer']
 print(showTechEmployer.unique())
 
 noisyData = ShowNullValues(survey)
@@ -219,18 +218,19 @@ for column in emptyColumns.index:
       if emptyColumns[column]>1000:
           survey.drop(column, axis=1, inplace=True)
 
+          
 for feature in survey:
     try: 
         survey[feature] = pd.to_numeric(survey[feature], errors='coerce').astype(int)
-        print('numeric cast\t\t', feature)
+        print('int cast\t\t', feature)
     except:
        try:
            survey[feature] = survey[feature].astype(str)
            survey.loc[survey[feature].str.contains('^\s+$|nan' , regex=True), feature] = np.nan
-           print('str cast\t\t', feature)
+           print('object/float cast\t', feature)
        except:
            continue
-                
+                 
 survey.to_csv('cleanedDatasets/OSMIcleaned.csv', index=False)
 
 noisyData = ShowNullValues(survey)

@@ -1,4 +1,4 @@
-Family History of Mental Illness,Company Size,year,Age,Age-Group,Gender,Sought Treatment,Describe Past Experience,Prefer Anonymity,Rate Reaction to Problems,Negative Consequences,Location,Access to information,Insurance,Diagnosis,Discuss Mental Health Problems,Responsible Employer,Disorder Notes,Disorder,Tech Employer
+Family History of Mental Illness,Company Size,year,Age,Age-Group,Gender,Sought Treatment,Describe Past Experience,Prefer Anonymity,Rate Reaction to Problems,Negative Consequences,Location,Access to information,Insurance,Diagnosis,Discuss Mental Health Problems,Responsible Employer,Disorder Notes,Disorder,Primarily a Tech Employer
 No,6-25,2014,37,31-40,Female,1,,,,No,USA,Yes,,,Maybe,Yes,,0,1
 No,More than 1000,2014,44,41-65,Male,0,,,,Maybe,USA,No,,,No,No,,0,0
 No,6-25,2014,32,31-40,Male,0,,,,No,Canada,No,,,Yes,No,,0,1
@@ -142,7 +142,7 @@ No,6-25,2014,22,21-30,Male,0,,,,No,Austria,No,,,Maybe,No,,0,1
 Yes,100-500,2014,38,31-40,Male,1,,,,Maybe,USA,No,,,Maybe,No,,0,1
 No,More than 1000,2014,37,31-40,Male,1,,,,Yes,United Kingdom,Yes,,,Maybe,Yes,,0,0
 No,26-100,2014,35,31-40,Male,0,,,,Yes,USA,No,,,Maybe,No,,0,0
-No,More than 1000,2014,30,21-30,Male,0,,,,No,USA,Yes,,,Maybe,No,,0,0
+No,More than 1000,2014,0,0-20,Male,0,,,,No,USA,Yes,,,Maybe,No,,0,0
 Yes,More than 1000,2014,30,21-30,Female,0,,,,Maybe,USA,No,,,Maybe,No,,0,1
 Yes,100-500,2014,37,31-40,Male,1,,,,Maybe,USA,Yes,,,Maybe,No,,0,0
 No,6-25,2014,24,21-30,Male,0,,,,Maybe,United Kingdom,Yes,,,Maybe,No,,0,1
@@ -363,7 +363,7 @@ No,6-25,2014,33,31-40,Female,0,,,,Maybe,USA,No,,,Maybe,No,,0,1
 Yes,26-100,2014,34,31-40,Male,1,,,,No,Germany,No,,,Yes,Yes,,0,1
 Yes,100-500,2014,26,21-30,Male,1,,,,Maybe,USA,No,,,Maybe,No,,0,0
 Yes,More than 1000,2014,32,31-40,Male,1,,,,No,USA,Yes,,,Maybe,Yes,,0,0
-No,6-25,2014,30,21-30,Male,1,,,,Maybe,USA,No,,,Maybe,No,,0,1
+No,6-25,2014,0,0-20,Male,1,,,,Maybe,USA,No,,,Maybe,No,,0,1
 Yes,More than 1000,2014,28,21-30,Male,1,,,,Maybe,USA,No,,,No,No,,0,1
 Yes,More than 1000,2014,35,31-40,Male,0,,,,No,USA,Yes,,,Maybe,No,,0,1
 Yes,100-500,2014,36,31-40,Male,1,,,,No,USA,Yes,,,Maybe,No,,0,1
@@ -389,7 +389,7 @@ No,500-1000,2014,42,41-65,Male,0,,,,No,New Zealand,No,,,Maybe,No,,0,1
 Yes,1-5,2014,29,21-30,Male,1,,,,Yes,USA,No,,,Maybe,No,,0,1
 No,6-25,2014,25,21-30,Female,1,,,,Yes,USA,No,,,Maybe,No,,0,1
 Yes,More than 1000,2014,33,31-40,Female,1,,,,Maybe,Sweden,Yes,,,Maybe,No,,0,1
-Yes,1-5,2014,30,21-30,Male,1,,,,Yes,Zimbabwe,No,,,No,No,,0,1
+Yes,1-5,2014,0,0-20,Male,1,,,,Yes,Zimbabwe,No,,,No,No,,0,1
 Yes,More than 1000,2014,40,31-40,Female,1,,,,Maybe,USA,No,,,No,No,,0,0
 No,More than 1000,2014,31,31-40,Male,0,,,,Yes,USA,No,,,Maybe,No,,0,1
 Yes,26-100,2014,26,21-30,Male,1,,,,No,Canada,No,,,Yes,Yes,,0,1
@@ -714,7 +714,7 @@ No,6-25,2014,27,21-30,Male,0,,,,No,France,No,,,Yes,Yes,,0,1
 Yes,100-500,2014,30,21-30,Male,0,,,,No,USA,No,,,Maybe,No,,0,1
 No,6-25,2014,29,21-30,Male,0,,,,Maybe,USA,Yes,,,Maybe,No,,0,1
 Yes,1-5,2014,32,31-40,Male,1,,,,Yes,USA,No,,,Maybe,No,,0,1
-No,26-100,2014,30,21-30,Male,1,,,,Yes,United Kingdom,No,,,No,No,,0,0
+No,26-100,2014,0,0-20,Male,1,,,,Yes,United Kingdom,No,,,No,No,,0,0
 No,500-1000,2014,25,21-30,Male,0,,,,Maybe,Germany,Yes,,,Maybe,Yes,,0,1
 No,6-25,2014,37,31-40,Male,0,,,,No,USA,Yes,,,Yes,Yes,,0,1
 Yes,6-25,2014,29,21-30,Male,0,,,,No,Netherlands,No,,,Maybe,Yes,,0,1
@@ -733,7 +733,7 @@ No,6-25,2014,37,31-40,Male,1,,,,Yes,United Kingdom,No,,,Yes,No,,0,1
 No,26-100,2014,24,21-30,Male,0,,,,Maybe,France,No,,,Maybe,No,,0,1
 No,6-25,2014,29,21-30,Male,0,,,,No,USA,No,,,Yes,No,,0,1
 No,26-100,2014,31,31-40,Male,0,,,,No,USA,Yes,,,Yes,No,,0,0
-No,100-500,2014,30,21-30,Male,0,,,,No,USA,No,,,Yes,Yes,,0,1
+No,100-500,2014,0,0-20,Male,0,,,,No,USA,No,,,Yes,Yes,,0,1
 No,100-500,2014,33,31-40,Male,0,,,,No,United Kingdom,No,,,Maybe,No,,0,0
 No,More than 1000,2014,43,41-65,Male,0,,,,No,USA,Yes,,,Maybe,No,,0,0
 No,26-100,2014,33,31-40,Male,1,,,,Maybe,United Kingdom,No,,,Maybe,No,,0,1
@@ -988,7 +988,7 @@ No,6-25,2014,29,21-30,Male,1,,,,No,United Kingdom,No,,,Yes,Yes,,0,1
 Yes,500-1000,2014,39,31-40,Female,0,,,,Yes,United Kingdom,No,,,No,No,,0,1
 No,6-25,2014,28,21-30,Male,0,,,,Yes,United Kingdom,No,,,No,Yes,,0,1
 Yes,26-100,2014,23,21-30,Male,0,,,,No,USA,Yes,,,Yes,No,,0,1
-Yes,1-5,2014,30,21-30,Undecided,1,,,,Yes,"Bahamas, The",Yes,,,Yes,Yes,,0,1
+Yes,1-5,2014,0,0-20,Undecided,1,,,,Yes,"Bahamas, The",Yes,,,Yes,Yes,,0,1
 No,1-5,2014,38,31-40,Male,0,,,,No,United Kingdom,Yes,,,Maybe,No,,0,1
 No,6-25,2014,19,0-20,Male,0,,,,No,United Kingdom,Yes,,,Yes,Yes,,0,1
 Yes,26-100,2014,30,21-30,Female,1,,,,No,USA,Yes,,,Maybe,Yes,,0,1
@@ -1126,7 +1126,7 @@ No,26-100,2014,45,41-65,Female,1,,,,No,USA,No,,,Maybe,No,,0,0
 No,6-25,2014,35,31-40,Male,0,,,,No,USA,Yes,,,No,Yes,,0,1
 Yes,1-5,2014,26,21-30,Male,1,,,,Yes,Germany,No,,,Yes,No,,0,1
 No,26-100,2014,20,0-20,Female,1,,,,No,USA,No,,,Maybe,No,,0,1
-Yes,1-5,2014,30,21-30,Male,1,,,,Yes,USA,Yes,,,Yes,Yes,,0,1
+Yes,1-5,2014,0,0-20,Male,1,,,,Yes,USA,Yes,,,Yes,Yes,,0,1
 Yes,6-25,2014,37,31-40,Male,0,,,,Maybe,Netherlands,Yes,,,Maybe,Yes,,0,1
 No,More than 1000,2014,28,21-30,Male,0,,,,Maybe,USA,Yes,,,No,No,,0,0
 Yes,26-100,2014,42,41-65,Female,1,,,,Yes,USA,No,,,Maybe,No,,0,0
@@ -1823,7 +1823,7 @@ No,6-25,2016,30,21-30,Male,0,,,,No,South Africa,Yes,,No,Yes,Yes,            No  
 Yes,6-25,2016,32,31-40,Undecided,1,,,,No,USA,Yes,,Yes,Maybe,Yes,            Maybe    Yes                              ,1,1
 No,More than 1000,2016,22,21-30,Male,0,,,,Maybe,USA,No,,No,Maybe,Maybe,            No    No                              ,0,1
 Yes,,2016,30,21-30,Male,0,,,,No,Poland,No,0,No,,,            No    No                              ,0,
-Yes,100-500,2016,30,21-30,Male,0,,,,Maybe,USA,No,,No,Maybe,Maybe,            No    No                              ,0,1
+Yes,100-500,2016,0,0-20,Male,0,,,,Maybe,USA,No,,No,Maybe,Maybe,            No    No                              ,0,1
 No,6-25,2016,33,31-40,Male,0,,,,No,Slovakia,No,,No,No,No,            No    No                              ,0,1
 No,6-25,2016,48,41-65,Female,1,,,,Yes,United Kingdom,No,,Yes,No,No,            No    Yes                              ,1,1
 No,More than 1000,2016,45,41-65,Male,1,,,,Maybe,Germany,No,,No,No,No,            No    Maybe                              ,0,1
@@ -1915,7 +1915,7 @@ Yes,More than 1000,2016,45,41-65,Male,0,,,,Maybe,USA,No,,Yes,Maybe,Maybe,       
 Yes,1-5,2016,26,21-30,Female,1,,,,Yes,Canada,No,,Yes,No,No,            No    Yes                              ,1,1
 Yes,100-500,2016,22,21-30,Male,1,,,,Yes,USA,Yes,,Yes,Maybe,Yes,            Yes    Maybe                              ,1,1
 Yes,6-25,2016,21,21-30,Male,0,,,,Yes,USA,No,,No,No,No,            No    Maybe                              ,0,1
-I don't know,More than 1000,2016,30,21-30,Male,1,,,,Maybe,Canada,Yes,,Yes,Maybe,Maybe,            Maybe    Yes                              ,1,1
+I don't know,More than 1000,2016,0,0-20,Male,1,,,,Maybe,Canada,Yes,,Yes,Maybe,Maybe,            Maybe    Yes                              ,1,1
 No,500-1000,2016,34,31-40,Male,0,,,,Yes,USA,Yes,,No,Yes,Maybe,            No    No                              ,0,0
 No,26-100,2016,25,21-30,Female,0,,,,Maybe,USA,Yes,,No,Maybe,Maybe,            No    No                              ,0,1
 Yes,6-25,2016,27,21-30,Male,1,,,,Yes,USA,Yes,,Yes,Maybe,Maybe,            Yes    Yes                              ,1,1
@@ -3487,9 +3487,9 @@ Yes,26-100,2017,29,21-30,Male,1,   They were understanding and shared that they 
 No,500-1000,2017,38,31-40,Male,1,  Largely consisted of being told people with depression should man the hell up.     ,0,Below Average,No,USA,No,,,Maybe,No,"            Possibly    Yes Often Rarely     Mood Disorder (Depression, Bipolar Disorder, etc)                       ",1,1
 No,26-100,2017,41,41-65,Male,1,  Panic disorder came up in conversation. Neutral response.     ,0,Above Average,Maybe,United Kingdom,Yes,,,Maybe,Yes,            No    Yes Not applicable to me Not applicable to me                            ,1,1
 No,6-25,2017,40,31-40,Male,1,"  Shared challenges, med info and issues, commiserated. Discussed med issues, ADHD. Response was positive. Challenges, med info. Challenges and how it was affecting my work. Shared challenges, related to me, shared differences. Challenges, med info, commiserated.",0,Below Average,Maybe,USA,Yes,,Yes,Maybe,Yes,"  Addictive Disorder   Anxiety Disorder (Generalized, Social, Phobia, etc)   Attention Deficit Hyperactivity Disorder    Yes    Yes Often Sometimes      Mood Disorder (Depression, Bipolar Disorder, etc)                      Substance Use Disorder",1,1
-Yes,,2017,30,21-30,Male,1,,,,,,No,1,Yes,No,No,"     Anxiety Disorder (Generalized, Social, Phobia, etc)       Yes    Yes Sometimes Rarely  Negatively Negatively                         ",1,0
+Yes,,2017,0,0-20,Male,1,,,,,,No,1,Yes,No,No,"     Anxiety Disorder (Generalized, Social, Phobia, etc)       Yes    Yes Sometimes Rarely  Negatively Negatively                         ",1,0
 No,26-100,2017,30,21-30,Male,0,   talked about burn out and results of that.     ,0,Below Average,No,USA,No,,,Yes,Yes,"    Anxiety Disorder (Generalized, Social, Phobia, etc)   Attention Deficit Hyperactivity Disorder     Possibly    Possibly Not applicable to me Not applicable to me                            ",1,1
-Yes,,2017,30,21-30,Male,1,    La la la Skipping this since you aren't recording data rn  Blah,,,,,Yes,1,Yes,Maybe,Maybe,"     Anxiety Disorder (Generalized, Social, Phobia, etc)   Attention Deficit Hyperactivity Disorder    Yes    Yes Often Sometimes  I'm not sure No change   Mood Disorder (Depression, Bipolar Disorder, etc)                      ",1,1
+Yes,,2017,0,0-20,Male,1,    La la la Skipping this since you aren't recording data rn  Blah,,,,,Yes,1,Yes,Maybe,Maybe,"     Anxiety Disorder (Generalized, Social, Phobia, etc)   Attention Deficit Hyperactivity Disorder    Yes    Yes Often Sometimes  I'm not sure No change   Mood Disorder (Depression, Bipolar Disorder, etc)                      ",1,1
 Yes,More than 1000,2018,57,41-65,Female,1,"I saw people who were on “stress” leave ridiculed, or talked about as thought they were it feeling the truth, or just wanted time off  I do have a supportive group of coworkers to talk to who support mental health. But not everyone u derstands or knows what to say  I informed my employer that I was very sick due to anxiety.  I was told not to let that interfere with my job.  I suffered stigma Andreas isolated and pushed to the side   I have a coworker who lives with bipolar disease.  Theylet me know when they are not having a good day.  They know it is ok with me ",1,Below Average,Yes,Canada,Yes,,,Yes,Yes,"    Anxiety Disorder (Generalized, Social, Phobia, etc)        Possibly    Yes  Rarely Sometimes    Mood Disorder (Depression, Bipolar Disorder, etc)                       ",1,1
 Yes,More than 1000,2018,29,21-30,Male,1,,1,Below Average,No,USA,No,,Yes,No,Yes,"     Anxiety Disorder (Generalized, Social, Phobia, etc)       Yes    Yes  Sometimes Often     Mood Disorder (Depression, Bipolar Disorder, etc)             Post-traumatic Stress Disorder         ",1,1
 Yes,6-25,2018,46,41-65,Male,0,"      We had a coworker have a drastic turn in behavior over the course of two weeks. He was going through a potential divorce and the stress became unbearable. We had two concerns. First, what could we do to ensure he got the help he needed, and second, what did we have to do at the office to mitigate the reputational and other damage caused by him having a dramatic episode in the office. We did those things, he did get help, and took about a month leave of absence. Of course, we've seen issues ranging from work-related stress to difficult family circumstances, but nothing, in our minds, that rose to the level of intervention as was the case with the first employee. ",0,Above Average,No,USA,No,,,Maybe,Yes,            No    No  Not applicable to me Not applicable to me                           ,0,1
