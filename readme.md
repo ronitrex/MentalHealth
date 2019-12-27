@@ -37,7 +37,7 @@ The Jupyter Notebook ***DataAnalysis*** deals with the process of analysing the 
 
 ### Supervised Machine Learning
 
-The Jupyter Notebook ***SupervisedLearning*** shows some supervised machine learning models trained on the cleaned datset.
+The Jupyter Notebook ***SupervisedLearning*** shows some supervised machine learning models trained on the cleaned dataset.
 
 ### [**Jupyter Notebook SupervisedLearning**](./SupervisedLearning.ipynb)
 
