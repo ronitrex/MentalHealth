@@ -6,9 +6,10 @@ survey2017 = pd.read_csv('datasets/OSMIsurvey2017.csv').assign(Year=2017)
 survey2018 = pd.read_csv('datasets/OSMIsurvey2018.csv').assign(Year=2018)
 survey2019 = pd.read_csv('datasets/OSMIsurvey2019.csv').assign(Year=2019)
 
-survey1416 =  pd.concat([survey2014, survey2016, survey2019], ignore_index=True, sort=True)
-survey171819 = pd.concat([survey2017, survey2018], ignore_index=True, sort=True)
-survey = pd.concat([survey1416, survey171819], ignore_index=True, sort=True)
+survey141619 =  pd.concat([survey2014, survey2016, survey2019], ignore_index=True, sort=True)
+survey1718 = pd.concat([survey2017, survey2018], ignore_index=True, sort=True)
+
+survey = pd.concat([survey141619, survey1718], ignore_index=True, sort=True)
 print(survey.shape)
 
 import re 
@@ -203,8 +204,8 @@ print(survey['Disorder'].unique())
 techEmployer = survey.loc[:, survey.columns.str.contains('tech company|tech/IT', regex=True)]
 techEmployer.fillna(' ', inplace=True)
 survey['Primarily a Tech Employer'] = techEmployer.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
-survey.loc[survey['Primarily a Tech Employer'].str.contains('yes|Yes|1|1.0' , regex=True, na=False), 'Primarily a Tech Employer'] = 1
-survey.loc[survey['Primarily a Tech Employer'].str.contains('no|No|0|0.0' , regex=True, na=False), 'Primarily a Tech Employer'] = 0
+survey.loc[survey['Primarily a Tech Employer'].str.contains('yes|Yes|1|1.0|True|true' , regex=True, na=False), 'Primarily a Tech Employer'] = 1
+survey.loc[survey['Primarily a Tech Employer'].str.contains('no|No|0|0.0|False|false' , regex=True, na=False), 'Primarily a Tech Employer'] = 0
 survey.drop(techEmployer, axis=1, inplace=True)
 showTechEmployer = survey['Primarily a Tech Employer']
 print(showTechEmployer.unique())

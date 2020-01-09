@@ -25,12 +25,13 @@ def bestFill(datset):
     for feature in survey:
         if survey[feature].dtype == np.int64:
              print('int64, not available = -1 : ', feature)
+             survey[feature].fillna(-1, inplace=True)
              survey[feature] = pd.to_numeric(survey[feature], errors='coerce').astype(int)
-             survey[feature].fillna(0, inplace=True)
+    
  
         elif survey[feature].dtype == np.float64:
              print('float64, not available = -1 : ', feature)
-             survey[feature].fillna(0, inplace=True)
+             survey[feature].fillna(-1, inplace=True)
              survey[feature] = pd.to_numeric(survey[feature], errors='coerce').astype(float)
 
         elif survey[feature].dtype == np.object:
