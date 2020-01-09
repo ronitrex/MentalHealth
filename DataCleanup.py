@@ -4,10 +4,11 @@ survey2014 = pd.read_csv('datasets/OSMIsurvey2014.csv').assign(Year=2014)
 survey2016 = pd.read_csv('datasets/OSMIsurvey2016.csv').assign(Year=2016)
 survey2017 = pd.read_csv('datasets/OSMIsurvey2017.csv').assign(Year=2017)
 survey2018 = pd.read_csv('datasets/OSMIsurvey2018.csv').assign(Year=2018)
+survey2019 = pd.read_csv('datasets/OSMIsurvey2019.csv').assign(Year=2019)
 
-survey1416 =  pd.concat([survey2014, survey2016], ignore_index=True, sort=True)
-survey1718 = pd.concat([survey2017, survey2018], ignore_index=True, sort=True)
-survey = pd.concat([survey1416, survey1718], ignore_index=True, sort=True)
+survey1416 =  pd.concat([survey2014, survey2016, survey2019], ignore_index=True, sort=True)
+survey171819 = pd.concat([survey2017, survey2018], ignore_index=True, sort=True)
+survey = pd.concat([survey1416, survey171819], ignore_index=True, sort=True)
 print(survey.shape)
 
 import re 
@@ -75,8 +76,8 @@ print(showGender.unique())
 soughtTreatment = survey.loc[:, survey.columns.str.contains('sought treatment')]
 soughtTreatment.fillna('', inplace=True)
 survey['Sought Treatment'] = soughtTreatment.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
-survey.loc[survey['Sought Treatment'].str.contains('yes|1.0|1|Yes' , regex=True, na=False), 'Sought Treatment'] = 1
-survey.loc[survey['Sought Treatment'].str.contains('no|0.0|0|No' , regex=True, na=False), 'Sought Treatment'] = 0
+survey.loc[survey['Sought Treatment'].str.contains('yes|1.0|1|Yes|True|true' , regex=True, na=False), 'Sought Treatment'] = 1
+survey.loc[survey['Sought Treatment'].str.contains('no|0.0|0|No|False|false' , regex=True, na=False), 'Sought Treatment'] = 0
 survey.drop(soughtTreatment, axis=1, inplace=True)
 showSoughtTreatment = survey['Sought Treatment']
 print(showSoughtTreatment.unique())

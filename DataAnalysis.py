@@ -19,14 +19,6 @@ def showFigure(fig, x=16, y=4):
     fig = plt.gcf()
     fig.set_size_inches(x, y)
     plt.show()
-    
-# countValues = ['Family History of Mental Illness',
-#        'Company Size', 'year',
-#        'Age', 'Age-Group', 'Gender', 'Sought Treatment', 'Prefer Anonymity',
-#        'Rate Reaction to Problems', 'Negative Consequences',
-#        'Access to information', 'Insurance', 'Diagnosis',
-#        'Discuss Mental Health Problems', 'Responsible Employer', 'Disorder',
-#        'Tech Employer']    
         
 fig = sns.distplot(survey['Age']);    
 showFigure(fig)    

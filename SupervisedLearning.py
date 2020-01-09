@@ -204,24 +204,6 @@ def decisionTreeClassifier():
 decisionTreeClassifier()
 
 
-from sklearn.naive_bayes import GaussianNB
-def gaussianNBClassifier():
-    # train a logistic regression model on the training set
-    modelGaussianNB = make_pipeline(preprocess, GaussianNB())
-    modelGaussianNB.fit(X_train, Y_train)
-
-    # make class predictions for the testing set
-    y_pred_class = modelGaussianNB.predict(X_test)
-
-    print('########### Gaussian Naive Bayes ###############')
-
-    accuracy_score = evaluateModel(modelGaussianNB, y_pred_class, True)
-
-    models['Gaussian Naive Bayes'] = accuracy_score * 100
-    
-gaussianNBClassifier()
-
-
 from sklearn.svm import SVC
 def SVMClassifier():
     # train a logistic regression model on the training set
