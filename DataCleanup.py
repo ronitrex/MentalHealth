@@ -95,8 +95,8 @@ print(showPastExperience)
 anon = survey.loc[:, survey.columns.str.contains('anonymous')]
 anon.fillna('', inplace=True)
 survey['Prefer Anonymity'] = anon.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
-survey.loc[survey['Prefer Anonymity'].str.contains('yes|1.0|1|Yes', regex=True, na=False), 'Prefer Anonymity'] = 1
-survey.loc[survey['Prefer Anonymity'].str.contains('no|0.0|0|No' , regex=True, na=False), 'Prefer Anonymity'] = 0
+survey.loc[survey['Prefer Anonymity'].str.contains('yes|1.0|1|Yes|True|true', regex=True, na=False), 'Prefer Anonymity'] = 1
+survey.loc[survey['Prefer Anonymity'].str.contains('no|0.0|0|No|False|false' , regex=True, na=False), 'Prefer Anonymity'] = 0
 survey.drop(anon, axis=1, inplace=True)
 showPreferAnonymity = survey['Prefer Anonymity']
 print(showPreferAnonymity.unique())
@@ -136,8 +136,8 @@ print(showLocation.unique())
 resources = survey.loc[:, survey.columns.str.contains('resources', regex=True)]
 resources.fillna('', inplace=True)
 survey['Access to information'] = resources.apply(lambda row: ''.join(row.values.astype(str)), axis=1)
-survey.loc[survey['Access to information'].str.contains('yes|Yes' , regex=True, na=False), 'Access to information'] = 'Yes'
-survey.loc[survey['Access to information'].str.contains('no|No' , regex=True, na=False), 'Access to information'] = 'No'
+survey.loc[survey['Access to information'].str.contains('yes|Yes' , regex=True, na=False), 'Access to information'] = 1
+survey.loc[survey['Access to information'].str.contains('no|No' , regex=True, na=False), 'Access to information'] = 0
 survey.drop(resources, axis=1, inplace=True)
 showAccessToInformation = survey['Access to information']
 print(showAccessToInformation.unique())
@@ -147,8 +147,8 @@ noisyData = ShowNullValues(survey)
 insurance = survey.loc[:, survey.columns.str.contains('insurance', regex=True)]
 insurance.fillna('', inplace=True)
 survey['Insurance'] = insurance.apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
-survey.loc[survey['Insurance'].str.contains('1.0|1' , regex=True, na=False), 'Insurance'] = 1
-survey.loc[survey['Insurance'].str.contains('0.0|0' , regex=True, na=False), 'Insurance'] = 0
+survey.loc[survey['Insurance'].str.contains('1.0|1|True|true' , regex=True, na=False), 'Insurance'] = 1
+survey.loc[survey['Insurance'].str.contains('0.0|0|False|false' , regex=True, na=False), 'Insurance'] = 0
 survey.drop(insurance, axis=1, inplace=True)
 showInsurance = survey['Insurance']
 print(showInsurance.unique())
