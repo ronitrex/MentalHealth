@@ -1,4 +1,4 @@
-# OSMI Mental Health
+# Mental Health [![GitHub](https://img.shields.io/github/license/ronitrex/MentalHealth)](./LICENSE)
 
 **Open Sourcing Mental Illness is a non-profit, 501(c)(3) corporation dedicated to raising awareness, educating, and providing resources to support mental wellness in the tech and open source communities. EIN: 81-3587896.**
 
